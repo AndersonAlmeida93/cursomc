@@ -1,8 +1,11 @@
 package com.andersonalmeida.cursomc.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.andersonalmeida.cursomc.domain.Categoria;
 import com.andersonalmeida.cursomc.domain.Cliente;
 import com.andersonalmeida.cursomc.repositories.ClienteRepository;
 import com.andersonalmeida.cursomc.services.exceptions.ObjectNotFoundException;
@@ -14,11 +17,11 @@ public class ClienteService {
 	private ClienteRepository repo;
 
 	public Cliente find(Integer id) {
-		Cliente obj = repo.findOne(id);
+	
+		Optional <Cliente> obj = repo.findById(id);
 		
-		if(obj == null){
-			throw new ObjectNotFoundException("Ojeto não encontrado! Id:" + id +  " , Tipo: " + Cliente.class.getName());
-		}
-		return obj;
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id 
+				+ " , Tipo : " + Cliente.class.getName()));
 	}
+		
 }
