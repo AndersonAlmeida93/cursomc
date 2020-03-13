@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.andersonalmeida.cursomc.domain.Categoria;
+import com.andersonalmeida.cursomc.dto.CategoriaDTO;
 import com.andersonalmeida.cursomc.repositories.CategoriaRepository;
 import com.andersonalmeida.cursomc.services.exceptions.DataIntegrityException;
 import com.andersonalmeida.cursomc.services.exceptions.ObjectNotFoundException;
@@ -28,9 +29,9 @@ public class CategoriaService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + " , Tipo : " + Categoria.class.getName()));
 	}
-	
-	public List<Categoria> findAll(){
-		
+
+	public List<Categoria> findAll() {
+
 		return repo.findAll();
 	}
 
@@ -57,13 +58,17 @@ public class CategoriaService {
 			throw new DataIntegrityException("Não é possível exlcuir uma categoria que possui produtos.");
 		}
 	}
-	
-	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
-		
+
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
-		
+
 	}
 	
-	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		
+		return new Categoria(objDto.getId(),objDto.getNome());
+	}
+
 }
